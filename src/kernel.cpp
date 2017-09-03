@@ -89,10 +89,28 @@
                terminal_row = 0;
        }
    }
+
+   void terminal_newline()
+   {
+        if (++terminal_row == VGA_HEIGHT)
+        {
+            terminal_row = 0;
+        }
+        terminal_column = 0;
+   }
     
    void terminal_write(const char* data, size_t size) {
        for (size_t i = 0; i < size; i++)
-           terminal_putchar(data[i]);
+       {
+           if(data[i] == '\n')
+           {
+                terminal_newline();
+           }
+           else
+           {
+                terminal_putchar(data[i]);
+           }
+       }
    }
     
    void terminal_writestring(const char* data) {
@@ -107,5 +125,5 @@
        terminal_initialize();
     
        /* Newline support is left as an exercise. */
-       terminal_writestring("Hello, kernel World!\n");
+       terminal_writestring("Hello, kernel World!\nLook! A new line!");
    }
