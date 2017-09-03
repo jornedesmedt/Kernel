@@ -1,0 +1,1 @@
+docker run --rm -v ${PWD}:/root/compile crosscompile /root/compile/build.sh
