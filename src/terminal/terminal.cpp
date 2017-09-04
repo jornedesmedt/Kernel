@@ -15,6 +15,7 @@ namespace terminal
         Terminal::row = 0;
         Terminal::column = 0;
         Terminal::color = Vga::vga_entry_color(VGA_COLOR_WHITE, VGA_COLOR_BLACK);
+        //0xB8000 is vga video memory adress for colour monitors
         Terminal::buffer = (uint16_t*) 0xB8000;
         for (size_t y = 0; y < VGA_HEIGHT; y++) 
         {
@@ -45,7 +46,7 @@ namespace terminal
             column = 0;
             if (++row == VGA_HEIGHT)
             {
-                row = 0;
+                scrollUp();
             }
         }
     }
@@ -69,5 +70,32 @@ namespace terminal
     void Terminal::print(const char* data)
     {
         write(data, strlen(data));
+    }
+
+    void Terminal::println(const char* data)
+    {
+        write(data, strlen(data));
+        newline();
+    }
+
+    void Terminal::scrollUp()
+    {
+        for (size_t y = 0; y < VGA_HEIGHT; y++) 
+        {
+            for (size_t x = 0; x < VGA_WIDTH; x++) 
+            {
+                const size_t index = y * VGA_WIDTH + x;
+                if(y < VGA_HEIGHT -1)
+                {
+                    const size_t index_below = (y+1) * VGA_WIDTH + x;
+                    buffer[index] = buffer[index_below];
+                }
+                else
+                {
+                    buffer[index] = Vga::vga_entry(' ', color);
+                }
+            }
+        }
+        --row;
     }
 }

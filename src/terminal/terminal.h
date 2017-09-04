@@ -23,11 +23,13 @@ namespace terminal
         static void putChar(char c);
         static void write(const char* data, size_t size);
         static void print(const char* data);
+        static void println(const char* data);
+        static void scrollUp();
         static inline void newline()
         {
              if (++row == vga::VGA_HEIGHT)
              {
-                 row = 0;
+                 scrollUp();
              }
              column = 0;
         }
