@@ -32,4 +32,11 @@
        }
        Terminal::println("Cheese!");
        Terminal::println("For everyone!");
+       Terminal::printError("No, wait... Cheese for noone...");
+       Terminal::newline();
+       for(uint8_t color = 0x00; color < 0xff; ++color)
+       {
+            Terminal::putChar('*', color);
+       }
+       Terminal::putChar('*', 0xff);
    }

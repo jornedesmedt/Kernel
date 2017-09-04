@@ -21,9 +21,14 @@ namespace terminal
         static void setColor(uint8_t color);
         static void putEntryAt(char c, uint8_t color, size_t x, size_t y);
         static void putChar(char c);
+        static void putChar(char c, uint8_t color);
         static void write(const char* data, size_t size);
+        static void write(const char* data, size_t size, uint8_t color);
         static void print(const char* data);
         static void println(const char* data);
+        static void print(const char* data, uint8_t color);
+        static void println(const char* data, uint8_t color);
+        static void printError(const char* data);
         static void scrollUp();
         static inline void newline()
         {
