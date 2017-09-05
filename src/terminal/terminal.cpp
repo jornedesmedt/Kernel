@@ -8,39 +8,23 @@ namespace terminal
     size_t Terminal::row = 0;
     size_t Terminal::column = 0;
     uint8_t Terminal::color = 0;
-    uint16_t* Terminal::buffer = 0;
     
     void Terminal::initialize(void) 
     {
         Terminal::row = 0;
         Terminal::column = 0;
         Terminal::color = Vga::vga_entry_color(VGA_COLOR_WHITE, VGA_COLOR_BLACK);
-        //0xB8000 is vga video memory adress for colour monitors
-        Terminal::buffer = (uint16_t*) 0xB8000;
-        for (size_t y = 0; y < VGA_HEIGHT; y++) 
-        {
-            for (size_t x = 0; x < VGA_WIDTH; x++) 
-            {
-                const size_t index = y * VGA_WIDTH + x;
-                buffer[index] = Vga::vga_entry(' ', color);
-            }
-        }
+        Vga::clear(color);
     }
 
     void Terminal::setColor(uint8_t color)
     {
         Terminal::color = color;
     }
-     
-    void Terminal::putEntryAt(char c, uint8_t color, size_t x, size_t y)
-    {
-        const size_t index = y * VGA_WIDTH + x;
-        Terminal::buffer[index] = Vga::vga_entry(c, color);
-    }
-     
+
     void Terminal::putChar(char c)
     {
-        putEntryAt(c, color, column, row);
+        Vga::putEntryAt(c, color, column, row);
         if (++column == VGA_WIDTH)
         {
             column = 0;
@@ -53,7 +37,7 @@ namespace terminal
 
     void Terminal::putChar(char c, uint8_t color)
     {
-        putEntryAt(c, color, column, row);
+        Vga::putEntryAt(c, color, column, row);
         if (++column == VGA_WIDTH)
         {
             column = 0;
@@ -134,11 +118,11 @@ namespace terminal
                 if(y < VGA_HEIGHT -1)
                 {
                     const size_t index_below = (y+1) * VGA_WIDTH + x;
-                    buffer[index] = buffer[index_below];
+                    Vga::putEntryAt(Vga::getEntryAt(index_below), index);
                 }
                 else
                 {
-                    buffer[index] = Vga::vga_entry(' ', color);
+                    Vga::putEntryAt(Vga::vga_entry(' ', color), index);
                 }
             }
         }

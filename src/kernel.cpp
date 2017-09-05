@@ -39,4 +39,8 @@
             Terminal::putChar('*', color);
        }
        Terminal::putChar('*', 0xff);
+       Terminal::newline();
+       Terminal::println("More testery");
+       Terminal::printError("Another error");
+       Terminal::scrollUp();
    }

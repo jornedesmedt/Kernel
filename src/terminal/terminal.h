@@ -15,11 +15,10 @@ namespace terminal
         static size_t row;
         static size_t column;
         static uint8_t color;
-        static uint16_t* buffer;
     public:
         static void initialize(void);
         static void setColor(uint8_t color);
-        static void putEntryAt(char c, uint8_t color, size_t x, size_t y);
+        
         static void putChar(char c);
         static void putChar(char c, uint8_t color);
         static void write(const char* data, size_t size);
