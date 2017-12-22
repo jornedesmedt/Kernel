@@ -5,21 +5,21 @@ using namespace string;
 namespace terminal
 {
 
-    size_t Terminal::row = 0;
-    size_t Terminal::column = 0;
-    uint8_t Terminal::color = 0;
+    size_t row = 0;
+    size_t column = 0;
+    uint8_t color = 0;
     
     void Terminal::initialize(void) 
     {
-        Terminal::row = 0;
-        Terminal::column = 0;
-        Terminal::color = Vga::vga_entry_color(VGA_COLOR_WHITE, VGA_COLOR_BLACK);
+        this->row = 0;
+        this->column = 0;
+        this->color = Vga::vga_entry_color(VGA_COLOR_WHITE, VGA_COLOR_BLACK);
         Vga::clear(color);
     }
 
     void Terminal::setColor(uint8_t color)
     {
-        Terminal::color = color;
+        this->color = color;
     }
 
     void Terminal::putChar(char c)

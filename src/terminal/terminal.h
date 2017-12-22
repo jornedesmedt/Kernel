@@ -10,26 +10,26 @@ namespace terminal
 {
     class Terminal
     {
-        //TODO: make statics non static once memory allocation is implemented
-    private:
-        static size_t row;
-        static size_t column;
-        static uint8_t color;
-    public:
-        static void initialize(void);
-        static void setColor(uint8_t color);
         
-        static void putChar(char c);
-        static void putChar(char c, uint8_t color);
-        static void write(const char* data, size_t size);
-        static void write(const char* data, size_t size, uint8_t color);
-        static void print(const char* data);
-        static void println(const char* data);
-        static void print(const char* data, uint8_t color);
-        static void println(const char* data, uint8_t color);
-        static void printError(const char* data);
-        static void scrollUp();
-        static inline void newline()
+    private:
+        size_t row;
+        size_t column;
+        uint8_t color;
+    public:
+        void initialize(void);
+        void setColor(uint8_t color);
+        
+        void putChar(char c);
+        void putChar(char c, uint8_t color);
+        void write(const char* data, size_t size);
+        void write(const char* data, size_t size, uint8_t color);
+        void print(const char* data);
+        void println(const char* data);
+        void print(const char* data, uint8_t color);
+        void println(const char* data, uint8_t color);
+        void printError(const char* data);
+        void scrollUp();
+        inline void newline()
         {
              if (++row == vga::VGA_HEIGHT)
              {

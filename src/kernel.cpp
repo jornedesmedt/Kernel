@@ -7,6 +7,7 @@
    #include <stdint.h>
    #include "vga/vga.h"
    #include "terminal/terminal.h"
+   #include "test/testclass.h"
 
    using namespace terminal;
     
@@ -21,26 +22,29 @@
    void kernel_main(void)
    {
        /* Initialize terminal interface */
-       Terminal::initialize();
+       Terminal terminal;
+       terminal.initialize();
     
        /* Newline support is left as an exercise. */
-       Terminal::print("Hello, kernel World!\nLook! A new line!\nFrom the terminal class!\n");
-       Terminal::println("println");
+       terminal.print("Hello, kernel World!\nLook! A new line!\nFrom the terminal class!\n");
+       terminal.println("println");
        for(size_t i=0; i<vga::VGA_HEIGHT; ++i)
        {
-            Terminal::println("Hello?");
+            terminal.println("Hello?");
        }
-       Terminal::println("Cheese!");
-       Terminal::println("For everyone!");
-       Terminal::printError("No, wait... Cheese for noone...");
-       Terminal::newline();
+       terminal.println("Cheese!");
+       terminal.println("For everyone!");
+       terminal.printError("No, wait... Cheese for noone...");
+       terminal.newline();
        for(uint8_t color = 0x00; color < 0xff; ++color)
        {
-            Terminal::putChar('*', color);
+            terminal.putChar('*', color);
        }
-       Terminal::putChar('*', 0xff);
-       Terminal::newline();
-       Terminal::println("More testery");
-       Terminal::printError("Another error");
-       Terminal::scrollUp();
+       terminal.putChar('*', 0xff);
+       terminal.newline();
+       terminal.println("More testery");
+       terminal.printError("Another error");
+       terminal.scrollUp();
+       Test test;
+       terminal.println(test.getFoo());
    }
