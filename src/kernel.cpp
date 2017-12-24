@@ -7,6 +7,7 @@
    #include <stdint.h>
    #include "vga/vga.h"
    #include "terminal/terminal.h"
+   #include "misc/int_to_hex.h"
    #include "test/testclass.h"
 
    using namespace terminal;
@@ -47,4 +48,8 @@
        terminal.scrollUp();
        Test test;
        terminal.println(test.getFoo());
+       uint32_t input = 0xfedcba98;
+       char h[11];
+       int32_to_hex(input, h);
+       terminal.println(h);
    }

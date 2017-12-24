@@ -24,15 +24,19 @@ compile_cpp()
 echo Compile sources
 echo boot.asm
 nasm -felf32 $src/boot.asm -o /root/compile/obj/boot.o
+echo paging.asm
+nasm -felf32 $src/mmu/paging.asm -o /root/compile/obj/paging.o
 compile_cpp $src/kernel.cpp $obj/kernel.o
 compile_cpp $src/terminal/terminal.cpp $obj/terminal.o
 compile_cpp $src/misc/string.cpp $obj/string.o
 compile_cpp $src/vga/vga.cpp $obj/vga.o
+compile_cpp $src/mmu/paging.cpp $obj/paging2.o
 compile_cpp $src/test/testclass.cpp $obj/testclass.o
+compile_cpp $src/misc/int_to_hex.cpp $obj/int_to_hex.o
 
 #Link object files
 echo Linking...
-$TARGET-gcc -T $linker -o $bin/kernel.bin -ffreestanding -O2 -nostdlib $obj/boot.o $obj/string.o $obj/vga.o $obj/terminal.o $obj/testclass.o $obj/kernel.o -lgcc
+$TARGET-gcc -T $linker -o $bin/kernel.bin -ffreestanding -O2 -nostdlib $obj/boot.o $obj/int_to_hex.o $obj/paging.o $obj/string.o $obj/paging2.o $obj/vga.o $obj/terminal.o $obj/testclass.o $obj/kernel.o -lgcc
 
 #Create iso
 echo Create iso...
