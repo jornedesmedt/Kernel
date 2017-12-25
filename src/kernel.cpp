@@ -50,6 +50,12 @@
        terminal.println(test.getFoo());
        uint32_t input = 0xfedcba98;
        char h[11];
-       int32_to_hex(input, h);
+       int_to_hex(input, h);
        terminal.println(h);
+
+       uint64_t input2 = 0xfedcba9876543210;
+       char h2[19];
+       int_to_hex(input2, h2);
+       terminal.println(h2);
+       
    }

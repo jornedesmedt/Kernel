@@ -2,6 +2,6 @@
 #define __MM_H_INCLUDED__
 #include <stdint.h>
 
-void int32_to_hex(uint32_t input, char* hex);
-const char* int64_to_hex(uint64_t input);
+void int_to_hex(uint32_t input, char* hex);
+void int_to_hex(uint64_t input, char* hex);
 #endif
