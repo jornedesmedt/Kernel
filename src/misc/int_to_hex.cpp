@@ -3,7 +3,6 @@
 void int_to_hex(uint32_t input, char* hex)
 {
     char hexRef[16] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
-    //char hex [10];
     hex[0] = '0';
     hex[1] = 'x';
     for(int i=0; i<8; ++i)
@@ -11,7 +10,7 @@ void int_to_hex(uint32_t input, char* hex)
         uint32_t index = (input >> (i * 4)) & 0xf;
         hex[9-i] = hexRef[index];
     }
-    //out = hex;
+    hex[10] = 0x00;
 }
 
 void int_to_hex(uint64_t input, char* hex)
@@ -24,4 +23,5 @@ void int_to_hex(uint64_t input, char* hex)
         uint32_t index = (input >> (i * 4)) & 0xf;
         hex[17-i] = hexRef[index];
     }
+    hex[18] = 0x00;
 }

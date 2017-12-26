@@ -33,6 +33,8 @@ compile_cpp $src/vga/vga.cpp $obj/vga.o
 compile_cpp $src/mmu/paging.cpp $obj/paging2.o
 compile_cpp $src/test/testclass.cpp $obj/testclass.o
 compile_cpp $src/misc/int_to_hex.cpp $obj/int_to_hex.o
+#compile_cpp $src/mmu/mm_detection_real.cpp $obj/mm_detection_real.o
+
 
 #Link object files
 echo Linking...
