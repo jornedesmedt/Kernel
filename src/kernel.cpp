@@ -19,6 +19,9 @@
    #error "You are not using a cross-compiler, you will most certainly run into trouble"
    #endif
 
+   extern uint32_t KERNEL_START;
+   extern uint32_t KERNEL_END;
+
     //Print an memory map entry to the screen.
     //Terminal must be a pointer, because otherwise the position won't be updated and the same line will be overwritten on the next print.
    void printMmap(multiboot_memory_map_t mmap, Terminal *terminal)
@@ -100,48 +103,13 @@
             terminal.println("Order is wrong");
         }
 
-        uint32_t test = 0x78 + 0x18;
+        uint32_t start_address = (uint32_t)&KERNEL_START;
         char t[11];
-        int_to_hex(test, t);
+        int_to_hex(start_address, t);
         terminal.println(t);
-        /*while(mmap < mbt->mmap_addr + mbt->mmap_length)
-        {            
-            mmap = (multiboot_memory_map_t*) ( (unsigned int)mmap + mmap->size + sizeof(mmap->size) );
-        }*/
 
-       //SMAP_entry_t* smap = (SMAP_entry_t*) 0x1000;
-       //const int smap_size = 0x2000;
-       
-       //int entry_count = detectMemory(smap, smap_size / sizeof(SMAP_entry_t));
-
-       /*if(entry_count == -1)
-       {
-           terminal.printError("ERROR: SMAP entry count is -1");
-        }
-        else
-        {
-            //process memory map
-            terminal.println("Base address       | Length             | Type       | ACPI");
-            for(int i=0; i< entry_count; ++i)
-            {
-                char address[19];
-                char length[19];
-                char type[11];
-                char acpi[11];
-
-                int_to_hex(smap[i].baseAddress, address);
-                int_to_hex(smap[i].length, length);
-                int_to_hex(smap[i].type, type);
-                int_to_hex(smap[i].ACPI, acpi);
-
-                terminal.print(address);
-                terminal.print(" | ");
-                terminal.print(length);
-                terminal.print(" | ");
-                terminal.print(type);
-                terminal.print(" | ");
-                terminal.print(acpi);
-                terminal.newline();
-            }
-        }*/
+        uint32_t end_address = (uint32_t)&KERNEL_END;
+        char t2[11];
+        int_to_hex(end_address, t2);
+        terminal.println(t2);
    }
