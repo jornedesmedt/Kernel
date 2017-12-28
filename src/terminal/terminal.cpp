@@ -128,4 +128,10 @@ namespace terminal
         }
         --row;
     }
+
+    void Terminal::setPos(size_t row, size_t col)
+    {
+        this->row = row;
+        this->column = col;
+    }
 }

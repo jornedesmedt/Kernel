@@ -29,6 +29,7 @@ namespace terminal
         void println(const char* data, uint8_t color);
         void printError(const char* data);
         void scrollUp();
+        void setPos(size_t row, size_t col);
         inline void newline()
         {
              if (++row == vga::VGA_HEIGHT)
