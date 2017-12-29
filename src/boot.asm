@@ -30,6 +30,7 @@ section .bss
 align 4
 stack_bottom:
 resb 16384 ; 16 KiB
+global stack_top:
 stack_top:
  
 ; The linker script specifies _start as the entry point to the kernel and the

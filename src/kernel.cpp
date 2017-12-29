@@ -21,6 +21,7 @@
 
    extern uint32_t KERNEL_START;
    extern uint32_t KERNEL_END;
+   extern uint32_t stack_top;
 
     //Print an memory map entry to the screen.
     //Terminal must be a pointer, because otherwise the position won't be updated and the same line will be overwritten on the next print.
@@ -40,6 +41,40 @@
         terminal->print(" | ");
         terminal->print(type);
         terminal->newline();
+   }
+
+   void memdump(Terminal *terminal, uint32_t address)
+   {
+        uint64_t* memory = (uint64_t*)address;
+        for(int i=0;i<24;++i)
+        {
+            char addr[11];
+            int_to_hex((uint32_t)&memory[i*2], addr);
+            char hexOutput[49];
+            char* str = (char*) &memory[i*2];
+            char out[18];
+            out[0] = ' ';
+            out[17] = 0x00;
+
+            int_to_memdump(memory[i*2], hexOutput);
+
+
+            for(int j=0; j<16; ++j)
+            {
+                if(!(str[j] == '\n' || str[j] == 0x00))
+                {
+                    out[j+1] = str[j];
+                }
+                else
+                {
+                    out[j+1] = '.';
+                }
+            }
+
+            terminal->print(addr);
+            terminal->print(hexOutput);
+            terminal->println(out);
+        }
    }
     
    #if defined(__cplusplus)
@@ -112,4 +147,58 @@
         char t2[11];
         int_to_hex(end_address, t2);
         terminal.println(t2);
+
+        char t5[11];
+        int_to_hex(KERNEL_END, t5);
+        terminal.println(t5);
+
+        char t6[11];
+        int_to_hex((uint32_t)&stack_top, t6);
+        terminal.println(t6);
+
+        memdump(&terminal, (uint32_t)&KERNEL_END);
+        /*uint32_t* memory = (uint32_t*) ((uint32_t)&KERNEL_END + 0x94);
+        uint32_t m=0;
+        while(m<20)
+        {
+            uint32_t curr_addr = (uint32_t)&memory[m];
+            char addr[11];
+            int_to_hex(curr_addr, addr);
+            ((Terminal*) &terminal)->print(addr);
+            ((Terminal*) &terminal)->print(" | ");
+            char bytes[11];
+            int_to_hex(memory[m], bytes);
+            ((Terminal*) &terminal)->println(bytes);
+            ++m;
+        }
+        terminal.println("Yay");
+        while(memory[m]==0)
+        {
+            uint32_t curr_addr = (uint32_t)&KERNEL_END + m*4;
+            char addr[11];
+            int_to_hex(curr_addr, addr);
+            ((Terminal*) &terminal)->print(addr);
+            ((Terminal*) &terminal)->print(" | ");
+            char bytes[11];
+            int_to_hex(memory[m], bytes);
+            ((Terminal*) &terminal)->println(bytes);
+            ++m;
+        }
+
+        while(memory[m]!=0)
+        {
+            uint32_t curr_addr = (uint32_t)&KERNEL_END + m*4;
+            char addr[11];
+            int_to_hex(curr_addr, addr);
+            ((Terminal*) &terminal)->print(addr);
+            ((Terminal*) &terminal)->print(" | ");
+            char bytes[11];
+            int_to_hex(memory[m], bytes);
+            ((Terminal*) &terminal)->println(bytes);
+            ++m;
+        }
+
+        char M[11];
+        int_to_hex(m, M);
+        terminal.println(M);*/
    }
