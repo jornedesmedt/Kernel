@@ -12,6 +12,7 @@
    //#include "mmu/mm_detection_real.h"
    #include "mmu/multiboot.h"
    #include "mmu/mm_explore.h"
+   #include "mmu/mm.h"
 
    using namespace terminal;
     
@@ -23,27 +24,7 @@
    extern uint32_t KERNEL_START;
    extern uint32_t KERNEL_END;
    extern uint32_t stack_top;
-
-    void clear_memory(Terminal* terminal)
-    {
-        uint32_t i = 0;
-        uint32_t* memory = (uint32_t*) ((uint32_t)&KERNEL_END);
-        while((uint32_t)&memory[i] <0x7fff000)
-        {            
-            memory[i] = 0;
-            ++i;
-        }
-
-        //terminal->println("Memory cleared 0x3fffffff...");
-        /*while(i<0x7FEF0000)
-        {
-            uint32_t* memory = (uint32_t*) ((uint32_t)&KERNEL_END);
-            memory[i] = 0;
-            ++i;
-        }*/
-
-        terminal->println("Memory cleared...");
-    }
+   
     
    #if defined(__cplusplus)
    extern "C" /* Use C linkage for kernel_main. */
@@ -52,14 +33,38 @@
     void kernel_main(multiboot_info* mbt, unsigned int magic)
     {
         /* Initialize terminal interface */
+        Terminal terminal;
+        terminal.initialize();
+        terminal.println("Terminal initialized");
+
+        init_mm(mbt->mmap_addr, mbt->mmap_length);
+        terminal.println("Memory initialized");
+        char mm_count[11];
+        int_to_hex(MEMORY_MAP_COUNT, mm_count);
+        terminal.print(mm_count);
+        terminal.println(" memory blocks mapped...");
+        char mm_total[11];
+        int_to_hex(TOTAL_MEMORY, mm_total);
+        terminal.print("Total memory :  ");
+        terminal.print(mm_total);
+        terminal.println(" bytes");
+        char mm_usable[11];
+        int_to_hex(USABLE_MEMORY, mm_usable);
+        terminal.print("Usable memory : ");
+        terminal.print(mm_usable);
+        terminal.println(" bytes");
+        char kernel_size[11];
+        int_to_hex((uint32_t) &KERNEL_END - (uint32_t) &KERNEL_START, kernel_size);
+        terminal.print("Used by kernel : ");
+        terminal.print(kernel_size);
+        terminal.println(" bytes");
+
         
-            Terminal terminal;
-            terminal.initialize();
 
-            terminal.println("Clearing memory");
-            clear_memory(&terminal);
+            //terminal.println("Clearing memory");
+            //clear_memory(&terminal);
 
-        char mmap_addr[11];
+        /*char mmap_addr[11];
         char mmap_length[11];
         int_to_hex((uint32_t)mbt->mmap_addr, mmap_addr);
         int_to_hex((uint32_t)mbt->mmap_length, mmap_length);
@@ -83,13 +88,13 @@
                     ordered = false;
                 }
                 total_memory += mmap[i].len;
+                
                 ++i;
-                uint32_t size = mmap[i].size /*+ sizeof(mmap[i].size)*/;
-                addr += size;
+                
         }
-        while(addr < mbt->mmap_length && mmap[i].size > 0);
+        while((uint32_t)&mmap[i] < (uint32_t) mbt->mmap_addr + mbt->mmap_length);
         
-        terminal.print("Printed ");
+        terminal.print("Printeddd ");
         char mmap_count[11];
         int_to_hex(i, mmap_count);
         terminal.print(mmap_count);
@@ -125,7 +130,7 @@
 
         char t6[11];
         int_to_hex((uint32_t)&stack_top, t6);
-        terminal.println(t6);
+        terminal.println(t6);*/
 
-        memdump(&terminal, (uint32_t)&KERNEL_END);
+        //memdump(&terminal, (uint32_t)&KERNEL_END);
     }
