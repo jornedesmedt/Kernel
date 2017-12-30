@@ -24,12 +24,16 @@
         uint32_t directoryIndex = 0;
 
         void initializePageDirectory();
-        void initializePageTable(uint32_t page_table[]);
+        //void initializePageTable(uint32_t page_table[]); //Turned into setupIdentityPaging
         void initializePaging();
+        void setupIdentityPaging(uint32_t* page_directory, uint32_t startAddress, uint32_t endAddress, uint32_t flags = 0) //set up identity for a range of addresses
 
         extern uint32_t KERNEL_START; //Physical start of the kernel, set in linker
         extern uint32_t KERNEL_END; //Physical end of the kernel, set in linker
         
         uint32_t* freeAddress;
         uint32_t* allocateNext(); //Return a pointer to the next free address for a directory table, page table or page and incremement freeAddress to the end
+
+        #define PAGE_SIZE 0x1000; //4kb
+        #define PAGE_TABLE_SIZE 0x400000; //4mb
 #endif

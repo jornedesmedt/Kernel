@@ -5,8 +5,13 @@ extern "C" void setup_paging(uint32_t* page_directory_address); //External ASM f
 void initializePaging()
 {
     initializePageDirectory();
-    first_page_table = allocateNext();
-    initializePageTable(first_page_table);
+    //first_page_table = allocateNext();
+    //initializePageTable(first_page_table);
+    //Identity page first megabytes
+    setupIdentityPaging(page_directory, 0x0, 0x100000, 3);
+    //TODO: Map kernel from KERNEL_START->KERNEL_END to 0xc0000000->+kernel size
+    //TODO: figure out where to map the paging structures for the initial pages (beyond 0xc0000000 or start at 1mb, probably best to start at 1mb, then implement some sort of free space mapping for malloc)
+
     setup_paging(page_directory);
 }
 
@@ -19,13 +24,32 @@ void initializePageDirectory()
     }
 }
 
-void initializePageTable(uint32_t page_table[])
+void setupIdentityPaging(uint32_t* page_directory, uint32_t startAddress, uint32_t endAddress, uint32_t flags = 0)
 {
-    for(unsigned int i=0; i<1024; ++i)
-    {
-        page_table[i] = (i * 0x1000) | 3; //Supervisor, read/write, present
-    }
+    uint32_t index_directory_first_table = startAddress / PAGE_TABLE_SIZE;
+    uint32_t index_directory_last_table = endAddress / PAGE_TABLE_SIZE;
+    uint32_t index_first_page = (startAddress % PAGE_TABLE_SIZE) / PAGE_TABLE_SIZE;
+    uint32_t index_last_page = (endAddress % PAGE_TABLE_SIZE) / PAGE_TABLE_SIZE;
 
+    for(uint32_t i=index_directory_first_table; i<=index_directory_last_table; ++i)
+    {
+        //Generate tables
+        uint32_t* page_table = allocateNext();
+        
+        //Fill table
+        for(unsigned int j=((i==index_directory_first_table)?index_first_page:0); j<=((i==index_directory_last_table)?index_last_page:1023); ++i)
+        {
+            //i * 0x1000 is identity paging, writing the same address as the area the page refers to
+            page_table[i] = (i * PAGE_TABLE_SIZE) | (j * PAGE_SIZE) | flags; //Supervisor, read/write, present
+            //Add page_table to directory
+            page_directory[i] = ((uint32_t)&page_table) | 3;
+        }
+        
+    }
+}
+
+void addPageTableToDirectory(uint32_t* page_table)
+{
     for(uint32_t i=0; i<1024;++i)
     {
         if(page_directory[i] & 1 == 0) //Check the page directory for an entry where the present flag is not set
