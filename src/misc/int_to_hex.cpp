@@ -25,19 +25,3 @@ void int_to_hex(uint64_t input, char* hex)
     }
     hex[18] = 0x00;
 }
-
-void int_to_memdump(uint8_t* input, char* hex)
-{
-    char hexRef[16] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
-    
-    for(int i=0; i<16; ++i)
-    {
-        uint32_t index = input[i] & 0xf;
-        uint32_t index2 = input[i] >> 4;
-
-        hex[i*3]  = ' ';
-        hex[i*3+2] = hexRef[index];
-        hex[i*3+1] = hexRef[index2];
-    }
-    hex[48] = 0x00;
-}
