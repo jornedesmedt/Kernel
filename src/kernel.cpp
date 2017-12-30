@@ -46,7 +46,7 @@
    void memdump(Terminal *terminal, uint32_t address)
    {
         uint64_t* memory = (uint64_t*)address;
-        for(int i=0;i<24;++i)
+        for(uint32_t i=0;i<24;++i)
         {
             char addr[11];
             int_to_hex((uint32_t)&memory[i*2], addr);
@@ -56,7 +56,7 @@
             out[0] = ' ';
             out[17] = 0x00;
 
-            int_to_memdump(memory[i*2], hexOutput);
+            int_to_memdump((uint8_t*)&memory[i*2], hexOutput);
 
 
             for(int j=0; j<16; ++j)
@@ -74,6 +74,10 @@
             terminal->print(addr);
             terminal->print(hexOutput);
             terminal->println(out);
+
+            //char o[19];
+            //int_to_hex(memory[i*2], o);
+            //terminal->println(o);
         }
    }
     
@@ -156,7 +160,15 @@
         int_to_hex((uint32_t)&stack_top, t6);
         terminal.println(t6);
 
+        //char o[19];
+        //int_to_hex((uint64_t)0x0123456789abcdef, o);
+        //terminal.println(o);
+
+        //char o2[5] = {0x73, 0x74, 0x75, 0x76, 0x00};
+        //terminal.println(o2);
+
         memdump(&terminal, (uint32_t)&KERNEL_END);
+
         /*uint32_t* memory = (uint32_t*) ((uint32_t)&KERNEL_END + 0x94);
         uint32_t m=0;
         while(m<20)
