@@ -2,7 +2,8 @@
 #define __PAGING_H_INCLUDED__
 
 #include <stdint.h>
-
+#include "mm.h"
+#include "multiboot.h"
 
         /*
         *   Page directory enties are 32 bits each, 4KB aligned
@@ -18,10 +19,17 @@
         *   1:      Read/Write
         *   0:      Present (1 if page is in physical memory). If 0, processor ignores all other bits.
         */
-        uint32_t page_directory[1024] __attribute__((aligned(4096))); //Ignore error, it's wrong
-        uint32_t first_page_table[1024] __attribute__((aligned(4096)));        
+        uint32_t* page_directory;//[1024] __attribute__((aligned(4096))); //Ignore error, it's wrong
+        uint32_t* first_page_table;//[1024] __attribute__((aligned(4096)));
+        uint32_t directoryIndex = 0;
+
         void initializePageDirectory();
         void initializePageTable(uint32_t page_table[]);
         void initializePaging();
 
+        extern uint32_t KERNEL_START; //Physical start of the kernel, set in linker
+        extern uint32_t KERNEL_END; //Physical end of the kernel, set in linker
+        
+        uint32_t* freeAddress;
+        uint32_t* allocateNext(); //Return a pointer to the next free address for a directory table, page table or page and incremement freeAddress to the end
 #endif

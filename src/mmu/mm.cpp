@@ -41,7 +41,7 @@ void init_mm(multiboot_uint32_t mmap_addr, multiboot_uint32_t mmap_length)
     }
     while((uint32_t)&MEMORY_MAP[MEMORY_MAP_COUNT] < (uint32_t)mmap_addr + mmap_length);
 }
-
+/*
 extern "C"
 {
 //malloc() shall allocate unused space for an object whose size in bytes is specified by size and whose value is unspecified.
@@ -66,4 +66,4 @@ extern "C"
     {
         
     }
-}
+}*/
