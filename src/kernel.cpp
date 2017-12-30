@@ -74,10 +74,6 @@
             terminal->print(addr);
             terminal->print(hexOutput);
             terminal->println(out);
-
-            //char o[19];
-            //int_to_hex(memory[i*2], o);
-            //terminal->println(o);
         }
    }
     
@@ -102,7 +98,6 @@
        
        terminal.println("Base address       | Length             | Type");
        multiboot_memory_map_t* mmap = (multiboot_memory_map_t*)mbt->mmap_addr;
-       //printMmap(mmap[0], terminal);
        bool ordered = true;
        uint32_t i=0;
        uint64_t total_memory = 0;
@@ -160,57 +155,5 @@
         int_to_hex((uint32_t)&stack_top, t6);
         terminal.println(t6);
 
-        //char o[19];
-        //int_to_hex((uint64_t)0x0123456789abcdef, o);
-        //terminal.println(o);
-
-        //char o2[5] = {0x73, 0x74, 0x75, 0x76, 0x00};
-        //terminal.println(o2);
-
         memdump(&terminal, (uint32_t)&KERNEL_END);
-
-        /*uint32_t* memory = (uint32_t*) ((uint32_t)&KERNEL_END + 0x94);
-        uint32_t m=0;
-        while(m<20)
-        {
-            uint32_t curr_addr = (uint32_t)&memory[m];
-            char addr[11];
-            int_to_hex(curr_addr, addr);
-            ((Terminal*) &terminal)->print(addr);
-            ((Terminal*) &terminal)->print(" | ");
-            char bytes[11];
-            int_to_hex(memory[m], bytes);
-            ((Terminal*) &terminal)->println(bytes);
-            ++m;
-        }
-        terminal.println("Yay");
-        while(memory[m]==0)
-        {
-            uint32_t curr_addr = (uint32_t)&KERNEL_END + m*4;
-            char addr[11];
-            int_to_hex(curr_addr, addr);
-            ((Terminal*) &terminal)->print(addr);
-            ((Terminal*) &terminal)->print(" | ");
-            char bytes[11];
-            int_to_hex(memory[m], bytes);
-            ((Terminal*) &terminal)->println(bytes);
-            ++m;
-        }
-
-        while(memory[m]!=0)
-        {
-            uint32_t curr_addr = (uint32_t)&KERNEL_END + m*4;
-            char addr[11];
-            int_to_hex(curr_addr, addr);
-            ((Terminal*) &terminal)->print(addr);
-            ((Terminal*) &terminal)->print(" | ");
-            char bytes[11];
-            int_to_hex(memory[m], bytes);
-            ((Terminal*) &terminal)->println(bytes);
-            ++m;
-        }
-
-        char M[11];
-        int_to_hex(m, M);
-        terminal.println(M);*/
    }
