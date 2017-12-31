@@ -41,8 +41,6 @@ stack_top:
 ; doesn't make sense to return from this function as the bootloader is gone.
 ; Declare _start as a function symbol with the given symbol size.
 section .text
-global loader
-loader equ (_start - 0xC0000000)
 
 global _start; :function (_start.end - _start)
 _start:
