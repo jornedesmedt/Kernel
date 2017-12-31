@@ -4,28 +4,29 @@ MEMINFO  equ  1<<1              ; provide memory map
 FLAGS    equ  MBALIGN | MEMINFO ; this is the Multiboot 'flag' field
 MAGIC    equ  0x1BADB002        ; 'magic number' lets bootloader find the header
 CHECKSUM equ -(MAGIC + FLAGS)   ; checksum of above, to prove we are multiboot
+
+KERNEL_VIRTUAL_BASE equ 0xC0000000 ;3GB
+KERNEL_PAGE_NUMBER equ (KERNEL_VIRTUAL_BASE >> 22) ;page directory index of kernel's 4MB PTE
+
+section .data
+align 0x1000
+BootPageDirectory:
+	;Set up a page directory entry to identity map the first 4MB of of the 32-bit address space
+	; only the following bits are set: 7- Page size (4MB),  1-read/write, 0, present
+	dd 0x00000083 ;flags
+	times (KERNEL_PAGE_NUMBER - 1) dd 0 ;Number of pages before kernel space
+	;This page directory entry defines a 4MB page containing the kernel
+	dd 0x00000083
+	times (1024 - KERNEL_PAGE_NUMBER - 1) dd 0 ;Pages after kernel image
  
-; Declare a multiboot header that marks the program as a kernel. These are magic
-; values that are documented in the multiboot standard. The bootloader will
-; search for this signature in the first 8 KiB of the kernel file, aligned at a
-; 32-bit boundary. The signature is in its own section so the header can be
-; forced to be within the first 8 KiB of the kernel file.
+;Declare the multiboot header (loaded in .text section by linker, before other.text sections)
 section .multiboot
 align 4
 	dd MAGIC
 	dd FLAGS
 	dd CHECKSUM
  
-; The multiboot standard does not define the value of the stack pointer register
-; (esp) and it is up to the kernel to provide a stack. This allocates room for a
-; small stack by creating a symbol at the bottom of it, then allocating 16384
-; bytes for it, and finally creating a symbol at the top. The stack grows
-; downwards on x86. The stack is in its own section so it can be marked nobits,
-; which means the kernel file is smaller because it does not contain an
-; uninitialized stack. The stack on x86 must be 16-byte aligned according to the
-; System V ABI standard and de-facto extensions. The compiler will assume the
-; stack is properly aligned and failure to align the stack will result in
-; undefined behavior.
+;Reserve stack space
 section .bss
 align 4
 stack_bottom:
@@ -33,13 +34,39 @@ resb 16384 ; 16 KiB
 global stack_top:
 stack_top:
  
+ 
+ 
 ; The linker script specifies _start as the entry point to the kernel and the
 ; bootloader will jump to this position once the kernel has been loaded. It
 ; doesn't make sense to return from this function as the bootloader is gone.
 ; Declare _start as a function symbol with the given symbol size.
 section .text
-global _start:function (_start.end - _start)
+global loader
+loader equ (_start - 0xC0000000)
+
+global _start; :function (_start.end - _start)
 _start:
+
+	mov ecx, (BootPageDirectory - KERNEL_VIRTUAL_BASE);
+	mov cr3, ecx ;Load page directory base register
+
+	mov ecx, cr4;
+	or ecx, 0x00000010 ;Set PSE bit to enable 4MB pages
+	mov cr4, ecx
+
+	mov ecx, cr0
+	or ecx, 0x80000000
+	mov cr0, ecx ;Set PG bit to enable paging.
+
+	lea ecx, [StartInHigherHalf]
+	jmp ecx
+
+StartInHigherHalf:
+	;Unmap identity mapped first 4MB of physical address space.
+	;mov dword[BootPageDirectory], 0
+	;invlpg [0]
+	;From now on, paging should be enabled. The first 4MB of physical addres space is mapped to KERNEL_VIRTUAL_BASE (3GB)
+
 	; The bootloader has loaded us into 32-bit protected mode on a x86
 	; machine. Interrupts are disabled. Paging is disabled. The processor
 	; state is as defined in the multiboot standard. The kernel has full
@@ -73,7 +100,10 @@ _start:
 	; preserved and the call is well defined.
     ; note, that if you are building on Windows, C functions may have "_" prefix in assembly: _kernel_main
 	extern kernel_main
-	push ebx
+	push eax ;pass multiboot magic number
+	add ebx, KERNEL_VIRTUAL_BASE
+	push ebx ;pass multiboot info structure. (physical address, may not be in the first 4MB)
+	cli
 	call kernel_main
  
 	; If the system has nothing more to do, put the computer into an

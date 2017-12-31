@@ -1,16 +1,17 @@
 #include "paging.h"
 
 extern "C" void setup_paging(uint32_t* page_directory_address); //External ASM function: paging.asm
-
+//Turns out I should be doing this from boot.asm, before calling kernel_main
 void initializePaging()
 {
     initializePageDirectory();
     //first_page_table = allocateNext();
     //initializePageTable(first_page_table);
     //Identity page first megabytes
-    setupIdentityPaging(page_directory, 0x0, 0x100000, 3);
+    setupIdentityPaging(page_directory, 0x0, 0xfffff, 3);
     //TODO: Map kernel from KERNEL_START->KERNEL_END to 0xc0000000->+kernel size
-    //TODO: figure out where to map the paging structures for the initial pages (beyond 0xc0000000 or start at 1mb, probably best to start at 1mb, then implement some sort of free space mapping for malloc)
+    //TODO: Map paging structures beyond 0xc0000000, after the kernel
+    setupVirtualAddressPaging(page_directory, KERNEL_START, freeAddress + 0x0fff, 0xc000000, 3);
 
     setup_paging(page_directory);
 }
@@ -22,6 +23,17 @@ void initializePageDirectory()
     {
         page_directory[i] = 0x00000002; //Readwrite
     }
+}
+
+void setupVirtualAddressPaging(uint32_t* page_directory, uint32_t startAddress, uint32_t endAddress, uint32_t startVirtualAddress, uint32_t flags=0)
+{
+    uint32_t endVirtualAddress = startVirtualAddress + endAddress - startAddress;
+    uint32_t addressDifference = startVirtualAddress - startAddress;
+
+    uint32_t index_directory_first_table = startVirtualAddress / PAGE_TABLE_SIZE;
+    uint32_t index_directory_last_table = endVirtualAddress / PAGE_TABLE_SIZE;
+    uint32_t index_first_page = (startVirtualAddress % PAGE_TABLE_SIZE) / PAGE_TABLE_SIZE;
+    uint32_t index_last_page = (endVirtualAddress % PAGE_TABLE_SIZE) / PAGE_TABLE_SIZE;
 }
 
 void setupIdentityPaging(uint32_t* page_directory, uint32_t startAddress, uint32_t endAddress, uint32_t flags = 0)

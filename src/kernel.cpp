@@ -37,6 +37,11 @@
         terminal.initialize();
         terminal.println("Terminal initialized");
 
+        char k_end[11];
+        int_to_hex((uint32_t)&KERNEL_END, k_end);
+        terminal.println(k_end);
+
+        /*
         init_mm(mbt->mmap_addr, mbt->mmap_length);
         terminal.println("Memory initialized");
         char mm_count[11];
@@ -59,7 +64,7 @@
         terminal.print(kernel_size);
         terminal.println(" bytes");
 
-        
+        */
 
             //terminal.println("Clearing memory");
             //clear_memory(&terminal);

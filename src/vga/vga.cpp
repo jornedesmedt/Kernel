@@ -2,7 +2,7 @@
 
 namespace vga
 {
-    uint16_t* Vga::buffer = (uint16_t*) 0xB8000;
+    uint16_t* Vga::buffer = (uint16_t*) 0xC00B8000;
 
     void Vga::putEntryAt(char c, uint8_t color, size_t x, size_t y)
     {
