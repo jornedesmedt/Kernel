@@ -22,7 +22,7 @@ void init_mm(multiboot_uint32_t mmap_addr, multiboot_uint32_t mmap_length)
         if(MEMORY_MAP[MEMORY_MAP_COUNT].addr >= 0x100000 && MEMORY_MAP[MEMORY_MAP_COUNT].type == MULTIBOOT_MEMORY_AVAILABLE)
         {
             USABLE_MEMORY += MEMORY_MAP[MEMORY_MAP_COUNT].len;
-            uint32_t start_addr = ((uint32_t)MEMORY_MAP[MEMORY_MAP_COUNT].addr >= (uint32_t)&KERNEL_END)?(uint32_t)MEMORY_MAP[MEMORY_MAP_COUNT].addr:(uint32_t)&KERNEL_END;
+            uint32_t start_addr = (uint32_t)MEMORY_MAP[MEMORY_MAP_COUNT].addr; //((uint32_t)MEMORY_MAP[MEMORY_MAP_COUNT].addr >= (uint32_t)&KERNEL_END)?(uint32_t)MEMORY_MAP[MEMORY_MAP_COUNT].addr:(uint32_t)&KERNEL_END;
             uint32_t end_addr = (uint32_t)MEMORY_MAP[MEMORY_MAP_COUNT].addr + MEMORY_MAP[MEMORY_MAP_COUNT].len;
             if(end_addr > start_addr)
             {
@@ -31,7 +31,10 @@ void init_mm(multiboot_uint32_t mmap_addr, multiboot_uint32_t mmap_length)
                 uint32_t* memory = (uint32_t*) start_addr;
                 while((uint32_t)&memory[i] < end_addr)
                 {            
-                    memory[i] = 0;
+                    if(/*(uint32_t)&memory[i] < 0xC0000000 - 4||*/ (uint32_t)&memory[i] > (uint32_t)&KERNEL_END)
+                    {
+                        //memory[i] = 0;
+                    }
                     ++i;
                 }
             }

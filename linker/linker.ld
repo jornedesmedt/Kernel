@@ -17,6 +17,7 @@ SECTIONS
 	.text : AT (ADDR(.text) - 0xC0000000 )
 	{
 		*(.multiboot)
+		*(.gdt_text)
 		*(.text)
 		*.(.rodata*)
 	}

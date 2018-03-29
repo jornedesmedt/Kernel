@@ -10,14 +10,17 @@ KERNEL_PAGE_NUMBER equ (KERNEL_VIRTUAL_BASE >> 22) ;page directory index of kern
 
 section .data
 align 0x1000
+global BootPageDirectory
 BootPageDirectory:
+	;NOTE: With 4MB pages, no PAE, there are no Page Tables, the pages are stored directly in the Page Directory
+
 	;Set up a page directory entry to identity map the first 4MB of of the 32-bit address space
 	; only the following bits are set: 7- Page size (4MB),  1-read/write, 0, present
-	dd 0x00000083 ;flags
-	times (KERNEL_PAGE_NUMBER - 1) dd 0 ;Number of pages before kernel space
+	dd 0x00000083 ;directory entry for identity paged first 4MB , will be unmapped later
+	times (KERNEL_PAGE_NUMBER - 1) dd 0 ;Number of pages before kernel space (empty pages)
 	;This page directory entry defines a 4MB page containing the kernel
-	dd 0x00000083
-	times (1024 - KERNEL_PAGE_NUMBER - 1) dd 0 ;Pages after kernel image
+	dd 0x00000083 ;Same first 4MB, but mapped to higher half
+	times (1024 - KERNEL_PAGE_NUMBER - 1) dd 0 ;Pages after kernel image, also empty
  
 ;Declare the multiboot header (loaded in .text section by linker, before other.text sections)
 section .multiboot
@@ -61,8 +64,8 @@ _start:
 
 StartInHigherHalf:
 	;Unmap identity mapped first 4MB of physical address space.
-	;mov dword[BootPageDirectory], 0
-	;invlpg [0]
+	mov dword [BootPageDirectory], 0
+	invlpg [0]
 	;From now on, paging should be enabled. The first 4MB of physical addres space is mapped to KERNEL_VIRTUAL_BASE (3GB)
 
 	; The bootloader has loaded us into 32-bit protected mode on a x86
