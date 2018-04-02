@@ -47,6 +47,8 @@ section .text
 
 global _start; :function (_start.end - _start)
 _start:
+	;extern gdt_flush
+	;call gdt_flush
 
 	mov ecx, (BootPageDirectory - KERNEL_VIRTUAL_BASE);
 	mov cr3, ecx ;Load page directory base register

@@ -13,6 +13,7 @@ appropriately depending on whether or not you use C++. */
 #include "mmu/multiboot.h"
 #include "mmu/mm_explore.h"
 #include "mmu/mm.h"
+#include "system/system.h"
 
 using namespace terminal;
 
@@ -33,6 +34,7 @@ extern "C" /* Use C linkage for kernel_main. */
 
 void kernel_main(multiboot_info* mbt, unsigned int magic)
 {
+    setup_gdt();
     /* Initialize terminal interface */
     Terminal terminal;
     terminal.initialize();
@@ -45,6 +47,7 @@ void kernel_main(multiboot_info* mbt, unsigned int magic)
     char term_ptr[11];
     int_to_hex((uint32_t)&terminal, term_ptr);
     terminal.println(term_ptr);
+    
     
     //init_mm(mbt->mmap_addr, mbt->mmap_length);
     /*terminal.println("Memory initialized");
