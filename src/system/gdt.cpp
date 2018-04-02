@@ -84,4 +84,5 @@ void setup_gdt()
     //TODO: TSS stuff
 
     //Flush gdt
+    gdt_flush((uint32_t)&gdt.descriptor);
 }
