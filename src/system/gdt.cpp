@@ -45,7 +45,8 @@ typedef struct
     uint32_t base;
 } __attribute__((packed)) gdt_descriptor_t;
 
-static struct {
+static struct
+{
     gdt_entry_t entries[5];
     gdt_descriptor_t descriptor;
 } gdt;
@@ -68,7 +69,7 @@ void encodeGdtEntry(gdt_entry_t *target, struct gdt_entry_unencoded source)
     target->access = source.access;
 }
 
-extern void gdt_flush(uint32_t);
+extern "C" void gdt_flush(uint32_t);
 
 void setup_gdt()
 {
@@ -76,10 +77,10 @@ void setup_gdt()
     gdt.descriptor.limit = sizeof gdt.entries - 1;
 
     encodeGdtEntry(&gdt.entries[0], {.base=0, .limit=0, .access=0, .flags=0}); //Null Segment
-    encodeGdtEntry(&gdt.entries[1], {.base=0, .limit=0xffffffff, .access=0x9A, .flags=0xC}); //Kernel code
-    encodeGdtEntry(&gdt.entries[2], {.base=0, .limit=0xffffffff, .access=0x92, .flags=0xC}); //Kernel data
-    encodeGdtEntry(&gdt.entries[3], {.base=0, .limit=0xffffffff, .access=0xFA, .flags=0xC}); //User code
-    encodeGdtEntry(&gdt.entries[4], {.base=0, .limit=0xffffffff, .access=0xF2, .flags=0xC}); //User data
+    encodeGdtEntry(&gdt.entries[1], {.base=0, .limit=0xffffffff, .access=0x9A, .flags=0xC0}); //Kernel code
+    encodeGdtEntry(&gdt.entries[2], {.base=0, .limit=0xffffffff, .access=0x92, .flags=0xC0}); //Kernel data
+    encodeGdtEntry(&gdt.entries[3], {.base=0, .limit=0xffffffff, .access=0xFA, .flags=0xC0}); //User code
+    encodeGdtEntry(&gdt.entries[4], {.base=0, .limit=0xffffffff, .access=0xF2, .flags=0xC0}); //User data
 
     //TODO: TSS stuff
 

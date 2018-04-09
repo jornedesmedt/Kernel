@@ -1,1 +1,1 @@
-docker run --rm -v ${PWD}:/root/compile jdesmedt/crosscompile-i686-elf /root/compile/build.sh
+docker run --rm -v ${PWD}:/root/compile jdesmedt/crosscompile-i686-elf /root/compile/iso.sh

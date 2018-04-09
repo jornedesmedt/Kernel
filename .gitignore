@@ -4,3 +4,8 @@
 *.iso
 /.vscode
 /include/libc
+isodir
+sysroot
+*.o
+*.d
+*.a

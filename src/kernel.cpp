@@ -8,7 +8,7 @@ appropriately depending on whether or not you use C++. */
 #include "vga/vga.h"
 #include "terminal/terminal.h"
 #include "misc/int_to_hex.h"
-#include "test/testclass.h"
+//#include "test/testclass.h"
 //#include "mmu/mm_detection_real.h"
 #include "mmu/multiboot.h"
 #include "mmu/mm_explore.h"
