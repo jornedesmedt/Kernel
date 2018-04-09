@@ -4,7 +4,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <kernel/vga.h>
-#include <kernel/string.h>
+#include <string.h>
 
 namespace terminal
 {

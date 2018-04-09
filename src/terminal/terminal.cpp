@@ -1,6 +1,5 @@
 #include <kernel/terminal.h>
 using namespace vga;
-using namespace string;
 
 namespace terminal
 {

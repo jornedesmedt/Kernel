@@ -35,7 +35,6 @@ system/gdt.o \
 mmu/mm.o \
 misc/int_to_hex.o \
 mmu/mm_explore.o \
-misc/string.o \
 vga/vga.o \
 terminal/terminal.o \
 kernel.o \

@@ -14,6 +14,7 @@ appropriately depending on whether or not you use C++. */
 #include <kernel/mm_explore.h>
 #include <kernel/mm.h>
 #include <kernel/system.h>
+#include <string.h>
 
 using namespace terminal;
 
@@ -47,6 +48,17 @@ void kernel_main(multiboot_info* mbt, unsigned int magic)
     char term_ptr[11];
     int_to_hex((uint32_t)&terminal, term_ptr);
     terminal.println(term_ptr);
+
+    char string[32] = "hello, world";
+    terminal.println(string);
+    size_t count1 = strlen(string);
+    char c1[11];
+    int_to_hex((uint32_t)count1, c1);
+    terminal.println(c1);
+     size_t count2 = strlen(string, 5);
+    char c2[11];
+    int_to_hex((uint32_t)count2, c2);
+    terminal.println(c2);
     
     
     //init_mm(mbt->mmap_addr, mbt->mmap_length);
