@@ -1,4 +1,6 @@
-#include "system.h"
+#include <kernel/system.h>
+#include <string.h>
+
 #define GDT_FLAG_GRANULARITY_PAGE 0x8
 #define GDT_FLAG_SIZE_32_BIT 0x4
 #define GDT_ACCESS_PRESENT 0x80

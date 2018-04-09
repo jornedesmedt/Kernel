@@ -1,4 +1,4 @@
-#include "mm.h"
+#include <kernel/mm.h>
 
 //Set intial values for globals
 multiboot_memory_map_t* MEMORY_MAP;

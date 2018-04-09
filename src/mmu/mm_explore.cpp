@@ -1,4 +1,4 @@
-#include "mm_explore.h"
+#include <kernel/mm_explore.h>
 
 void memdump_line(uint8_t* input, char* hex)
 {

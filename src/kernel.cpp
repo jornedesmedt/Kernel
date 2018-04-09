@@ -5,15 +5,15 @@ appropriately depending on whether or not you use C++. */
 #endif
 #include <stddef.h>
 #include <stdint.h>
-#include "vga/vga.h"
-#include "terminal/terminal.h"
-#include "misc/int_to_hex.h"
+#include <kernel/vga.h>
+#include <kernel/terminal.h>
+#include <kernel/int_to_hex.h>
 //#include "test/testclass.h"
 //#include "mmu/mm_detection_real.h"
-#include "mmu/multiboot.h"
-#include "mmu/mm_explore.h"
-#include "mmu/mm.h"
-#include "system/system.h"
+#include <kernel/multiboot.h>
+#include <kernel/mm_explore.h>
+#include <kernel/mm.h>
+#include <kernel/system.h>
 
 using namespace terminal;
 

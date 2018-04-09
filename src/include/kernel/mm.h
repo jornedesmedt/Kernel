@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <stddef.h>
 //#include <stdlib.h>
-#include "multiboot.h"
+#include <kernel/multiboot.h>
 
 extern multiboot_memory_map_t* MEMORY_MAP; //The memory map, set from main
 extern uint32_t MEMORY_MAP_COUNT; //The number of entries in the memory map, set from main after running through memory map the first time

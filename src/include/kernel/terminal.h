@@ -3,8 +3,8 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include "../vga/vga.h"
-#include "../misc/string.h"
+#include <kernel/vga.h>
+#include <kernel/string.h>
 
 namespace terminal
 {

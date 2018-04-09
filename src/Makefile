@@ -48,8 +48,7 @@ $(ARCHDIR)/crtend.o \
 $(ARCHDIR)/crtn.o \
 
 LINK_LIST=\
-$(KERNEL_OBJS) \
-#$(LDFLAGS) \
+$(LDFLAGS) \
 $(ARCHDIR)/crti.o \
 $(ARCHDIR)/crtbegin.o \
 $(KERNEL_OBJS) \
@@ -63,8 +62,8 @@ PHONY: all clean install install-headers install-kernel
 all: myos.kernel
 
 myos.kernel: $(OBJS) ../linker/linker.ld
-	#$(CC1) -T $(ARCHDIR)/linker.ld -o $@ $(CFLAGS) $(LINK_LIST)
-	$(CCLINK) -T ../linker/linker.ld -o $@ $(LINKFLAGS) $(KERNEL_OBJS) $(LINKPOST)
+	$(CC1) -T $(ARCHDIR)/linker.ld -o $@ $(CFLAGS) $(LINK_LIST)
+	#$(CCLINK) -T ../linker/linker.ld -o $@ $(LINKFLAGS) $(KERNEL_OBJS) $(LINKPOST)
 	grub-file --is-x86-multiboot myos.kernel
 
 $(ARCHDIR)/crtbegin.o $(ARCHDIR)/crtend.o:
@@ -73,13 +72,13 @@ $(ARCHDIR)/crtbegin.o $(ARCHDIR)/crtend.o:
 .c.o:
 	$(CC) -MD -c $< -o $@  -std=gnu11 $(CFLAGS) $(CPPFLAGS)
 .cpp.o:
-	#$(CC) -MD -c $< -o $@  $(CFLAGS) $(CPPFLAGS)
-	$(CXX) -c $< -o $@ $(CXXFLAGS)
+	$(CC) -MD -c $< -o $@  $(CFLAGS) $(CPPFLAGS)
+	#$(CXX) -c $< -o $@ $(CXXFLAGS)
 .S.o:
 	$(CC) -MD -c $< -o $@ $(CFLAGS) $(CPPFLAGS)
 .asm.o:
-	#nasm -felf32 $< -o $@ $(CPPFLAGS)
-	nasm -felf32 $< -o $@
+	nasm -felf32 $< -o $@ $(CPPFLAGS)
+	#nasm -felf32 $< -o $@
 clean:
 	rm -f myos.kernel
 	rm -f $(OBJS)  *.o */*.o */*/*.o

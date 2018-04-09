@@ -1,4 +1,4 @@
-#include "vga.h"
+#include <kernel/vga.h>
 
 namespace vga
 {

@@ -1,4 +1,4 @@
-#include "int_to_hex.h"
+#include <kernel/int_to_hex.h>
 
 void int_to_hex(uint32_t input, char* hex)
 {
