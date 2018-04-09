@@ -58,7 +58,7 @@ void encodeGdtEntry(gdt_entry_t *target, struct gdt_entry_unencoded source)
 
     //Encode the limit
     target->limit_low = source.limit & 0xFFFF; //Limit 0:15
-    target->flags_limit_middle =  ((source.limit>>16) & 0xF) | source.flags; //Limit 16:23 
+    target->flags_limit_middle =  ((source.limit>>16) & 0xF) | ((source.flags<<4) & 0xF0); //Limit 16:23 
 
     //Encode base
     target->base_low = source.base & 0xFFFF; // Base 0:15
@@ -77,10 +77,10 @@ void setup_gdt()
     gdt.descriptor.limit = sizeof gdt.entries - 1;
 
     encodeGdtEntry(&gdt.entries[0], {.base=0, .limit=0, .access=0, .flags=0}); //Null Segment
-    encodeGdtEntry(&gdt.entries[1], {.base=0, .limit=0xffffffff, .access=0x9A, .flags=0xC0}); //Kernel code
-    encodeGdtEntry(&gdt.entries[2], {.base=0, .limit=0xffffffff, .access=0x92, .flags=0xC0}); //Kernel data
-    encodeGdtEntry(&gdt.entries[3], {.base=0, .limit=0xffffffff, .access=0xFA, .flags=0xC0}); //User code
-    encodeGdtEntry(&gdt.entries[4], {.base=0, .limit=0xffffffff, .access=0xF2, .flags=0xC0}); //User data
+    encodeGdtEntry(&gdt.entries[1], {.base=0, .limit=0xffffffff, .access=0x9A, .flags=0xC}); //Kernel code
+    encodeGdtEntry(&gdt.entries[2], {.base=0, .limit=0xffffffff, .access=0x92, .flags=0xC}); //Kernel data
+    encodeGdtEntry(&gdt.entries[3], {.base=0, .limit=0xffffffff, .access=0xFA, .flags=0xC}); //User code
+    encodeGdtEntry(&gdt.entries[4], {.base=0, .limit=0xffffffff, .access=0xF2, .flags=0xC}); //User data
 
     //TODO: TSS stuff
 
