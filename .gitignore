@@ -9,3 +9,4 @@ sysroot
 *.o
 *.d
 *.a
+src/myos.kernel
