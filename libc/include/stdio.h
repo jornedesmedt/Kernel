@@ -1,6 +1,8 @@
 #ifndef __POSIX_STDIO_H__
 #define __POSIX_STDIO_H__
 
+#include <sys/cdefs.h>
+
 #define EOF (-1)
 
 #ifdef __cplusplus

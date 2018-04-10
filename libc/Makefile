@@ -37,7 +37,7 @@ string/strlen.o \
 stdio/printf.o \
 stdio/putchar.o \
 stdio/puts.o \
-#stdlib/abort.o \
+stdlib/abort.o \
 
 HOSTEDOBJS=\
 $(ARCH_HOSTEDOBJS) \
@@ -91,7 +91,7 @@ clean:
 	rm -f $(OBJS) $(LIBK_OBJS) *.o */*.o */*/*.o
 	rm -f $(OBJS:.o=.d) $(LIBK_OBJS:.o=.d) *.d */*.d */*/*.d
 
-install: install-headers install-libs
+install: clean install-headers install-libs
 
 install-headers:
 	#@echo "\nlibc install-headers\n"

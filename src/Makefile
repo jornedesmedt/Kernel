@@ -9,8 +9,8 @@ LIBS?=
 
 DESTDIR?=
 PREFIX?=/usr/local
-EXEC_PREFIX=$(PREFIX)
-BOOTDIR?=$(PREFIX)/boot
+EXEC_PREFIX?=$(PREFIX)
+BOOTDIR?=$(EXEC_PREFIX)/boot
 INCLUDEDIR?=$(PREFIX)/include
 
 CFLAGS:=$(CFLAGS) -ffreestanding -Wall -Wextra
@@ -55,14 +55,13 @@ $(LIBS) \
 $(ARCHDIR)/crtend.o \
 $(ARCHDIR)/crtn.o \
 
-PHONY: all clean install install-headers install-kernel
+.PHONY: all clean install install-headers install-kernel
 .SUFFIXES: .o .c .S .asm .cpp
 
 all: myos.kernel
 
 myos.kernel: $(OBJS) ../linker/linker.ld
 	$(CC1) -T $(ARCHDIR)/linker.ld -o $@ $(CFLAGS) $(LINK_LIST)
-	#$(CCLINK) -T ../linker/linker.ld -o $@ $(LINKFLAGS) $(KERNEL_OBJS) $(LINKPOST)
 	grub-file --is-x86-multiboot myos.kernel
 
 $(ARCHDIR)/crtbegin.o $(ARCHDIR)/crtend.o:
@@ -72,15 +71,13 @@ $(ARCHDIR)/crtbegin.o $(ARCHDIR)/crtend.o:
 	$(CC) -MD -c $< -o $@  -std=gnu11 $(CFLAGS) $(CPPFLAGS)
 .cpp.o:
 	$(CC) -MD -c $< -o $@  $(CFLAGS) $(CPPFLAGS)
-	#$(CXX) -c $< -o $@ $(CXXFLAGS)
 .S.o:
 	$(CC) -MD -c $< -o $@ $(CFLAGS) $(CPPFLAGS)
 .asm.o:
 	nasm -felf32 $< -o $@ $(CPPFLAGS)
-	#nasm -felf32 $< -o $@
 clean:
 	rm -f myos.kernel
-	rm -f $(OBJS)  *.o */*.o */*/*.o
+	rm -f $(OBJS) *.o */*.o */*/*.o
 	rm -f $(OBJS:.o=.d) *.d */*.d */*/*.d
 
 install: clean install-headers install-kernel
@@ -94,3 +91,4 @@ install-kernel: myos.kernel
 	cp myos.kernel $(DESTDIR)$(BOOTDIR)
 
 -include $(OBJS:.o=.d)
+-include $(LIBK_OBJS:.o=.d)
