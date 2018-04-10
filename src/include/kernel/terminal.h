@@ -8,14 +8,14 @@
 
 namespace terminal
 {
-    class Terminal
-    {
+    //class Terminal
+    //{
         
-    private:
-        size_t row;
-        size_t column;
-        uint8_t color;
-    public:
+    //private:
+        static size_t row;
+        static size_t column;
+        static uint8_t color;
+    //public:
         void initialize(void);
         void setColor(uint8_t color);
         
@@ -38,6 +38,6 @@ namespace terminal
              }
              column = 0;
         }
-    };
+    //};
 }
 #endif

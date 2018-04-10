@@ -7,7 +7,7 @@
 #include <kernel/terminal.h>
 
 void memdump_line(uint8_t* input, char* hex);
-void memdump(terminal::Terminal *terminal, uint32_t address);
-void printMmap(multiboot_memory_map_t mmap, terminal::Terminal *terminal);
+void memdump(/*terminal::Terminal *terminal,*/ uint32_t address);
+void printMmap(multiboot_memory_map_t mmap/*, terminal::Terminal *terminal*/);
 
 #endif

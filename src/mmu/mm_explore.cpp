@@ -16,7 +16,7 @@ for(int i=0; i<16; ++i)
 hex[48] = 0x00;
 }
 
-void memdump(terminal::Terminal *terminal, uint32_t address)
+void memdump(/*terminal::Terminal *terminal,*/ uint32_t address)
 {
     uint64_t* memory = (uint64_t*)address;
     for(uint32_t i=0;i<24;++i)
@@ -44,15 +44,15 @@ void memdump(terminal::Terminal *terminal, uint32_t address)
             }
         }
 
-        terminal->print(addr);
-        terminal->print(hexOutput);
-        terminal->println(out);
+        terminal::print(addr);
+        terminal::print(hexOutput);
+        terminal::println(out);
     }
 }
 
 //Print an memory map entry to the screen.
 //Terminal must be a pointer, because otherwise the position won't be updated and the same line will be overwritten on the next print.
-void printMmap(multiboot_memory_map_t mmap, terminal::Terminal *terminal)
+void printMmap(multiboot_memory_map_t mmap/*, terminal::Terminal *terminal*/)
 {
     char address[19];
     char length[19];
@@ -62,10 +62,10 @@ void printMmap(multiboot_memory_map_t mmap, terminal::Terminal *terminal)
     int_to_hex((uint64_t)mmap.len, length);
     int_to_hex((uint32_t)mmap.type, type);
 
-    terminal->print(address);
-    terminal->print(" | ");
-    terminal->print(length);
-    terminal->print(" | ");
-    terminal->print(type);
-    terminal->newline();
+    terminal::print(address);
+    terminal::print(" | ");
+    terminal::print(length);
+    terminal::print(" | ");
+    terminal::print(type);
+    terminal::newline();
 }

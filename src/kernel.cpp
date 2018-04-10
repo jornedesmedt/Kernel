@@ -37,28 +37,28 @@ void kernel_main(multiboot_info* mbt, unsigned int magic)
 {
     setup_gdt();
     /* Initialize terminal interface */
-    Terminal terminal;
-    terminal.initialize();
-    terminal.println("Terminal initialized");
+    //Terminal terminal;
+    terminal::initialize();
+    terminal::println("Terminal initialized");
 
     char k_end[11];
     int_to_hex((uint32_t)&KERNEL_END, k_end);
-    terminal.println(k_end);
+    terminal::println(k_end);
 
-    char term_ptr[11];
+    /*char term_ptr[11];
     int_to_hex((uint32_t)&terminal, term_ptr);
-    terminal.println(term_ptr);
+    terminal::println(term_ptr);*/
 
     char string[32] = "hello, world";
-    terminal.println(string);
+    terminal::println(string);
     size_t count1 = strlen(string);
     char c1[11];
     int_to_hex((uint32_t)count1, c1);
-    terminal.println(c1);
+    terminal::println(c1);
      size_t count2 = strlen(string, 5);
     char c2[11];
     int_to_hex((uint32_t)count2, c2);
-    terminal.println(c2);
+    terminal::println(c2);
     
     
     //init_mm(mbt->mmap_addr, mbt->mmap_length);
