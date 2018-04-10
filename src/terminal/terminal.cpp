@@ -21,7 +21,7 @@ namespace terminal
         terminal::color = color;
     }
 
-    void putChar(char c)
+    /*void putChar(char c)
     {
         Vga::putEntryAt(c, color, column, row);
         if (++column == VGA_WIDTH)
@@ -32,10 +32,14 @@ namespace terminal
                 scrollUp();
             }
         }
-    }
+    }*/
 
     void putChar(char c, uint8_t color)
     {
+        if(!color)
+        {
+            color = terminal::color;
+        }
         Vga::putEntryAt(c, color, column, row);
         if (++column == VGA_WIDTH)
         {
@@ -47,7 +51,7 @@ namespace terminal
         }
     }
      
-    void write(const char* data, size_t size)
+    /*void write(const char* data, size_t size)
     {
         for (size_t i = 0; i < size; i++)
         {
@@ -61,7 +65,7 @@ namespace terminal
                      break;
             }
         }
-    }
+    }*/
 
     void write(const char* data, size_t size, uint8_t color)
     {
@@ -79,21 +83,21 @@ namespace terminal
         }
     }
      
-    void print(const char* data)
+    /*void print(const char* data)
     {
         write(data, strlen(data));
-    }
+    }*/
 
     void print(const char* data, uint8_t color)
     {
         write(data, strlen(data), color);
     }
 
-    void println(const char* data)
+    /*void println(const char* data)
     {
         write(data, strlen(data));
         newline();
-    }
+    }*/
 
     void println(const char* data, uint8_t color)
     {

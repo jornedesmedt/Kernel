@@ -15,6 +15,7 @@ appropriately depending on whether or not you use C++. */
 #include <kernel/mm.h>
 #include <kernel/system.h>
 #include <string.h>
+#include <stdio.h>
 
 using namespace terminal;
 
@@ -40,6 +41,8 @@ void kernel_main(multiboot_info* mbt, unsigned int magic)
     //Terminal terminal;
     terminal::initialize();
     terminal::println("Terminal initialized");
+
+    puts("Test From puts");
 
     char k_end[11];
     int_to_hex((uint32_t)&KERNEL_END, k_end);

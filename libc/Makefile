@@ -34,10 +34,10 @@ string/memcmp.o \
 string/memcpy.o \
 string/memmove.o \
 string/strlen.o \
-#stdio/printf.o \
+stdio/printf.o \
 stdio/putchar.o \
 stdio/puts.o \
-stdlib/abort.o \
+#stdlib/abort.o \
 
 HOSTEDOBJS=\
 $(ARCH_HOSTEDOBJS) \
@@ -75,7 +75,7 @@ libk.a: $(LIBK_OBJS)
 	$(CC1) -MD -c $< -o $@ -std=gnu11 $(LIBK_CFLAGS) $(LIBK_CPPFLAGS)
 
 .cpp.libk.o:
-	$(CC) -MD -c $< -o $@ -std=gnu11 $(LIBK_CFLAGS) $(LIBK_CPPFLAGS)
+	$(CC) -MD -c $< -o $@ $(LIBK_CFLAGS) $(LIBK_CPPFLAGS)
 
 .S.libk.o:
 	$(CC1) -MD -c $< -o $@ $(LIBK_CFLAGS) $(LIBK_CPPFLAGS)
