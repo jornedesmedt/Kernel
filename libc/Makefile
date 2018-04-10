@@ -94,12 +94,10 @@ clean:
 install: clean install-headers install-libs
 
 install-headers:
-	#@echo "\nlibc install-headers\n"
 	mkdir -p $(DESTDIR)$(INCLUDEDIR)
 	cp -R --preserve=timestamps include/. $(DESTDIR)$(INCLUDEDIR)/.
 
 install-libs: $(BINARIES)
-	#@echo "\nlibc install-libs\n"
 	mkdir -p $(DESTDIR)$(LIBDIR)
 	cp $(BINARIES) $(DESTDIR)$(LIBDIR)
 

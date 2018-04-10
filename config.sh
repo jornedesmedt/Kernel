@@ -9,12 +9,6 @@ export AS=${HOST}-as
 export CC=${HOST}-g++
 export CC1=${HOST}-gcc
 
-export CXX=${HOST}-g++
-export CXXFLAGS='-ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti'
-export CCLINK=${HOST}-gcc
-export LINKFLAGS='-ffreestanding -O2 -nostdlib'
-export LINKPOST='-lgcc'
-
 export PREFIX=/usr
 export EXEC_PREFIX=$PREFIX
 export BOOTDIR=/boot
