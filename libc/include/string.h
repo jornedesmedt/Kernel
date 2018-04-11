@@ -5,7 +5,7 @@
 #include <locale.h>
 
 #include <stdarg.h>
-#include <overloading.h>
+#include <sys/cdefs.h>
 
 #ifdef __cplusplus
 extern "C" {
