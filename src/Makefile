@@ -60,7 +60,7 @@ $(ARCHDIR)/crtn.o \
 
 all: myos.kernel
 
-myos.kernel: $(OBJS) ../linker/linker.ld
+myos.kernel: $(OBJS) $(ARCHDIR)/linker.ld
 	$(CC1) -T $(ARCHDIR)/linker.ld -o $@ $(CFLAGS) $(LINK_LIST)
 	grub-file --is-x86-multiboot myos.kernel
 

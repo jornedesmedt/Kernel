@@ -20,9 +20,9 @@ namespace terminal
         void setColor(uint8_t color);
         
         //void putChar(char c);
-        void putChar(char c, uint8_t color = terminal::color);
+        extern "C" void putChar(char c, uint8_t color = terminal::color);
         //void write(const char* data, size_t size);
-        void write(const char* data, size_t size, uint8_t color = terminal::color);
+        extern "C" void write(const char* data, size_t size, uint8_t color = terminal::color);
        // void print(const char* data);
         //void println(const char* data);
         void print(const char* data, uint8_t color = terminal::color);

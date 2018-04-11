@@ -36,18 +36,26 @@ namespace terminal
 
     void putChar(char c, uint8_t color)
     {
-        if(!color)
+        switch(c)
         {
-            color = terminal::color;
-        }
-        Vga::putEntryAt(c, color, column, row);
-        if (++column == VGA_WIDTH)
-        {
-            column = 0;
-            if (++row == VGA_HEIGHT)
-            {
-                scrollUp();
-            }
+            case '\n':
+                newline();
+                break;
+            default:
+                if(!color)
+                {
+                    color = terminal::color;
+                }
+                Vga::putEntryAt(c, color, column, row);
+                if (++column == VGA_WIDTH)
+                {
+                    column = 0;
+                    if (++row == VGA_HEIGHT)
+                    {
+                        scrollUp();
+                    }
+                }
+                break;
         }
     }
      
@@ -71,15 +79,15 @@ namespace terminal
     {
         for (size_t i = 0; i < size; i++)
         {
-            switch(data[i])
-            {
-                 case '\n':
-                     newline();
-                     break;
-                 default:
+            //switch(data[i])
+            //{
+            //     case '\n':
+            //         newline();
+            //         break;
+            //     default:
                      putChar(data[i], color);
-                     break;
-            }
+            //         break;
+            //}
         }
     }
      
