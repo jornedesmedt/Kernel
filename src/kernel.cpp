@@ -95,17 +95,17 @@ void kernel_main(multiboot_info* mbt, unsigned int magic)
         //terminal.println("Clearing memory");
         //clear_memory(&terminal);
 
-    /*char mmap_addr[11];
+    char mmap_addr[11];
     char mmap_length[11];
-    int_to_hex((uint32_t)mbt->mmap_addr, mmap_addr);
+    int_to_hex((uint32_t)mbt->mmap_addr + 0xc0000000, mmap_addr);
     int_to_hex((uint32_t)mbt->mmap_length, mmap_length);
-    terminal.print("MMAP Address : ");
-    terminal.println(mmap_addr);
-    terminal.print("MMAP Length  : ");
-    terminal.println(mmap_length);
+    terminal::print("MMAP Address : ");
+    terminal::println(mmap_addr);
+    terminal::print("MMAP Length  : ");
+    terminal::println(mmap_length);
     
-    terminal.println("Base address       | Length             | Type");
-    multiboot_memory_map_t* mmap = (multiboot_memory_map_t*)mbt->mmap_addr;
+    terminal::println("Base address       | Length             | Type");
+    multiboot_memory_map_t* mmap = (multiboot_memory_map_t*)(mbt->mmap_addr + 0xc0000000);
     bool ordered = true;
     uint32_t i=0;
     uint64_t total_memory = 0;
@@ -113,7 +113,7 @@ void kernel_main(multiboot_info* mbt, unsigned int magic)
     
     do
     {           
-            printMmap(mmap[i], &terminal);
+            printMmap(mmap[i]);
             if(i>0 && mmap[i].addr < mmap[i-1].addr)
             {
                 ordered = false;
@@ -123,9 +123,9 @@ void kernel_main(multiboot_info* mbt, unsigned int magic)
             ++i;
             
     }
-    while((uint32_t)&mmap[i] < (uint32_t) mbt->mmap_addr + mbt->mmap_length);
+    while((uint32_t)&mmap[i] < (uint32_t) mbt->mmap_addr + 0xc0000000 + mbt->mmap_length);
     
-    terminal.print("Printeddd ");
+   /* terminal.print("Printeddd ");
     char mmap_count[11];
     int_to_hex(i, mmap_count);
     terminal.print(mmap_count);
@@ -144,7 +144,7 @@ void kernel_main(multiboot_info* mbt, unsigned int magic)
     {
         terminal.println("Order is wrong");
     }
-
+    
     uint32_t start_address = (uint32_t)&KERNEL_START;
     char t[11];
     int_to_hex(start_address, t);

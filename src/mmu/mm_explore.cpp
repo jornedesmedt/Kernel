@@ -1,4 +1,5 @@
 #include <kernel/mm_explore.h>
+#include <stdio.h>
 
 void memdump_line(uint8_t* input, char* hex)
 {
@@ -58,14 +59,17 @@ void printMmap(multiboot_memory_map_t mmap/*, terminal::Terminal *terminal*/)
     char length[19];
     char type[11];
 
+    const char * typeString[] = {"Available (1)", "Reserved (2)", "ACPI reclaimable (3)", "ACPI NVS (4)", "BADRAM (5)"};
+
     int_to_hex((uint64_t)mmap.addr, address);
     int_to_hex((uint64_t)mmap.len, length);
     int_to_hex((uint32_t)mmap.type, type);
 
-    terminal::print(address);
+    printf("%s | %s | %s\n", address, length, typeString[mmap.type-1]);
+    /*terminal::print(address);
     terminal::print(" | ");
     terminal::print(length);
     terminal::print(" | ");
     terminal::print(type);
-    terminal::newline();
+    terminal::newline();*/
 }
